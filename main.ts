@@ -13,6 +13,13 @@ import { join } from "node:path";
 const PITCH =
   "That app idea you've been sitting on? Just describe it in plain words on make.fun and an AI agent will build a first version you can actually try tonight, free — no code, no cost, and if you don't love it, you've lost nothing.";
 
+// The gate only accepts 1–240 characters, so refuse to write anything
+// outside that range instead of shipping an entry the judge never sees.
+const length = [...PITCH].length;
+if (length < 1 || length > 240) {
+  throw new Error(`pitch must be 1-240 characters, got ${length}`);
+}
+
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 const outFile = join(outDir, "entry.txt");
 
